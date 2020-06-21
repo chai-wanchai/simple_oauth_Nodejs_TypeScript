@@ -19,8 +19,7 @@ const swaggerOptions = {
       }
     },
   },
-  // ['.routes/*.js']
-  apis: ['app.js','./src/routers/*.ts']
+  apis: ['app.js','./src/routers/*.ts','./swagger/*.yaml']
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 const app = express();
