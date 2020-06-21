@@ -1,0 +1,18 @@
+{
+  "url": {
+    "base": "http://localhost:5000"
+  },
+  "env": "localhost",
+  "api": {},
+  "jwt": {
+    "secret": "25237ZA87A9E911E420BB460fhgdfhgfhgfh716A192689977700F99264CECD77B1E679567145"
+  },
+  "postgres": {
+    "host": "ec2-18-214-211-47.compute-1.amazonaws.com",
+    "port": 5432,
+    "database": "d98k5kcrtvb2gr",
+    "username": "wtgqkcpvmkldxs",
+    "password": "dcea427b71d30c1b9caa467e934280422381d38498f77dd9198ac792fdb8a4a6",
+    "dbUrl": "postgres://wtgqkcpvmkldxs:dcea427b71d30c1b9caa467e934280422381d38498f77dd9198ac792fdb8a4a6@ec2-18-214-211-47.compute-1.amazonaws.com:5432/d98k5kcrtvb2gr"
+  }
+}

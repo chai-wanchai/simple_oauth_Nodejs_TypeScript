@@ -1,0 +1,35 @@
+version: '3.5'
+
+services:
+  api:
+    container_name: basestarternodejsts
+    image: basestarternodejsts
+    build:
+      context: .
+      dockerfile: ./docker/development/Dockerfile
+    restart: always
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - .env
+    links:
+      - postgres_db
+    depends_on:
+      - postgres_db
+  
+  postgres_db:
+    image: postgres:9.6.17-alpine
+    container_name: "postgres_db"
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: P@ssw0rd   
+      PGDATA: /data/postgres   
+    ports:
+      - 5432:5432
+volumes:
+    postgres_database:
+        external: true
