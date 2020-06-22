@@ -2,33 +2,82 @@ openapi: 3.0.1
 tags:
   - name: Authorizations
     description: Everything about your Authorizations
-
+schemes:
+- "https"
+- "http"
 paths:
   /api/v1/oauth/token:
     post:
       tags:
         - Authorizations
+      security:
+        - bearerAuth: []
       summary: Get user token
       description: Get token
+      parameters:
+        - in: header
+          name: client_id
+          schema:
+            type: integer
+          required: true
+        - in: header  
+          name: client_secret
+          schema:
+            type: string
+          required: true
       requestBody:
         description: Oauth Body as object
         content:
           application/json:
             schema:
-              properties:
-                  id:
-                    type: integer
-                    format: int64
+              $ref: '#/components/schemas/RequestToken'
+                
         required: true
       responses:
         '200':
           description: A successful response
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseToken'
         '400':
           description: Error Bad Request
-          content: {
-              "statusCode": 400,
-              "errorMessage": "Invalid Grant Type",
-              "errorCode": "Error",
-              "data": {}
-          }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    RequestToken:
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        grant_type:
+          type: string
+      required:  
+        - grant_type
+    ResponseToken:
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+        refresh_token:
+          type: string
+    ErrorResponse:
+      properties:
+        statusCode:
+          type: integer
+        errorMessage:
+          type: string
+        errorCode:
+          type: string
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+security:
+  - bearerAuth: []

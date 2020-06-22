@@ -19,19 +19,41 @@ export const ERROR_CODE = {
 		errorMessage: "User Not Found",
 		errorCode: "USER_NOT_FOUND"
 	},
-	GRANT_TYPE_INVALID:{
+	GRANT_TYPE_INVALID: {
 		statusCode: 400,
 		errorMessage: "Grant Type Invalid",
 		errorCode: "GRANT_TYPE_INVALID"
 	},
-	TOKEN_REVOKE:{
+	TOKEN_REVOKE: {
 		statusCode: 401,
 		errorMessage: "Token is revoke",
 		errorCode: "TOKEN_REVOKE"
 	},
-	INVALID_CLIENT:{
+	INVALID_CLIENT: {
 		statusCode: 401,
 		errorMessage: "Client not Valid",
 		errorCode: "INVALID_CLIENT"
 	}
 }
+export const HTTP_CODE = [
+	{
+		statusCode: 400,
+		errorCode: "Bad Request"
+	},
+	{
+		statusCode: 401,
+		errorCode: "Unauthorized"
+	},
+	{
+		statusCode: 403,
+		errorCode: "Forbidden"
+	},
+	{
+		statusCode: 404,
+		errorCode: "Page not found"
+	},
+	{
+		statusCode: 500,
+		errorCode: "Internal Server Error"
+	}
+]

@@ -51,6 +51,7 @@ export interface IEncryptConfig {
 export interface IConfig {
   url: {
     base: string;
+    port: number;
   };
   env: string,
   jwt: {

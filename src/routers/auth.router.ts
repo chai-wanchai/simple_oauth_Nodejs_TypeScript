@@ -15,8 +15,8 @@ export const router = express.Router();
  *        description: A successful response
  */
 router.post('/oauth/authorize', loginWithRefreshToken);
-router.post('/oauth/verify',Middelware.handleClientFromeRequet, Verify);
-router.post('/oauth/token', AuthValidation, AuthType);
+router.post('/oauth/verify', Middelware.handleClientFromeRequet, Verify);
+router.post('/oauth/token', Middelware.handleClientFromeRequet, AuthValidation, AuthType);
 async function AuthType(req: express.Request, res: express.Response, next: express.NextFunction) {
   try {
     const { grant_type } = req.body
