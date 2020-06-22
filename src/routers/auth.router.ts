@@ -15,7 +15,7 @@ export const router = express.Router();
  *        description: A successful response
  */
 router.post('/oauth/authorize', loginWithRefreshToken);
-router.post('/oauth/verify', Middelware.handleClientFromeRequet, Verify);
+router.get('/oauth/verify', Middelware.handleClientFromeRequet, Verify);
 router.post('/oauth/token', Middelware.handleClientFromeRequet, AuthValidation, AuthType);
 async function AuthType(req: express.Request, res: express.Response, next: express.NextFunction) {
   try {
@@ -38,7 +38,12 @@ async function AuthType(req: express.Request, res: express.Response, next: expre
 
 }
 async function Verify(req: express.Request, res: express.Response, next: express.NextFunction) {
-  const { token } = req.body
+  let token = ''
+  if (req.method === 'GET') {
+    token = req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : ''
+  } else if (req.method === 'POST') {
+    token = req.body.token
+  }
   try {
     const payload = JWT.verifyToken(token)
     res.status(200).json({

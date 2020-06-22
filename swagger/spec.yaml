@@ -10,21 +10,11 @@ paths:
     post:
       tags:
         - Authorizations
-      security:
-        - bearerAuth: []
       summary: Get user token
-      description: Get token
+      description: Get user token
       parameters:
-        - in: header
-          name: client_id
-          schema:
-            type: integer
-          required: true
-        - in: header  
-          name: client_secret
-          schema:
-            type: string
-          required: true
+        - $ref: "#/parameters/ClientId"
+        - $ref: "#/parameters/ClientSecret"
       requestBody:
         description: Oauth Body as object
         content:
@@ -46,6 +36,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/oauth/verify:
+    get:
+      parameters:
+        - $ref: "#/parameters/ClientId"
+        - $ref: "#/parameters/ClientSecret"
+      tags:
+        - Authorizations
+      
+      security:
+        - bearerAuth: []
+      summary: Get user information with token header
+      responses:
+        '200':
+          description: A successful response
+parameters:
+    ClientId:
+      in: header
+      name: client_id
+      type: integer
+      required: true
+    ClientSecret:
+      in: header  
+      name: client_secret
+      type: string
+      required: true
 components:
   schemas:
     RequestToken:

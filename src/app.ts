@@ -37,6 +37,10 @@ const swaggerOptions = {
       {
         "url": `http://localhost:${port}`,
         "description": "Development server"
+      },
+      {
+        "url": `http://localhost:5000`,
+        "description": "Stage server"
       }
     ],
   },
