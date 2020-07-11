@@ -4,8 +4,8 @@ import UserManager from '../manager/UserManager'
 import * as _ from 'lodash'
 import AuthManager from '../manager/AuthManager'
 import { ErrorHandle, IError, CommonError } from '../common/errorHandle';
-import { UserAttributes } from '../types/users'
-import { IToken } from '../types/token'
+import { UserAttributes } from '../@types/users'
+import { IToken } from '../@types/token'
 import JWT  from '../common/jwt'
 import { IUsers } from '../model/Auth/User';
 

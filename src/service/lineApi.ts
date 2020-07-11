@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { LineProfile, LineVerifyResp } from '../types/lineType';
+import { LineProfile, LineVerifyResp } from '../@types/lineType';
 import { ErrorHandle } from '../common/errorHandle'
 export class LineApi {
   public async getProfile(accessToken: string): Promise<AxiosResponse<LineProfile>> {

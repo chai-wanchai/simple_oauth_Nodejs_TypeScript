@@ -2,7 +2,7 @@ import JWT from '../common/jwt'
 import * as _ from 'lodash'
 import { CommonError, ErrorHandle } from '../common/errorHandle'
 import dbService from '../service/dbService'
-import { IClient, IClientConfig } from '../types/client';
+import { IClient, IClientConfig } from '../@types/client';
 export class ClientManager {
   async addClient(clientName: string, createdBy: number, description?: string): Promise<IClient> {
     try {

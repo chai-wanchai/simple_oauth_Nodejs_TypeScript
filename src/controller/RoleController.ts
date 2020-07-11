@@ -1,9 +1,9 @@
 import { Response, Request, NextFunction } from 'express'
 import manager from '../manager'
 import { ErrorHandle } from '../common/errorHandle'
-import { IRole } from '../types/role';
+import { IRole } from '../@types/role';
 import * as _ from 'lodash'
-import { IToken } from '../types/token'
+import { IToken } from '../@types/token'
 export async function addRole(req: Request, res: Response, next: NextFunction) {
   try {
     const payload: IToken = res.locals.payload

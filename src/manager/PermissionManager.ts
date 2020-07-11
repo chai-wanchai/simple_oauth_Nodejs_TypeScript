@@ -1,5 +1,5 @@
 import dbService from '../service/dbService'
-import { IRolePermission, IPermission } from '../types/permission';
+import { IRolePermission, IPermission } from '../@types/permission';
 import { ErrorHandle, IError, CommonError } from '../common/errorHandle';
 export class PermissiobManager {
 

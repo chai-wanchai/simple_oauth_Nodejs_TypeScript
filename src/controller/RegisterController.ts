@@ -2,8 +2,8 @@ import { Response, Request, NextFunction } from 'express'
 import manager from '../manager'
 import { ErrorHandle } from '../common/errorHandle'
 import * as _ from 'lodash'
-import { IClient } from '../types/client';
-import { IToken } from '../types/token';
+import { IClient } from '../@types/client';
+import { IToken } from '../@types/token';
 export async function registerUser(req: Request, res: Response, next: NextFunction) {
 	try {
 		let dataUser = req.body

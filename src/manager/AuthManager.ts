@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 import { CommonError, ErrorHandle } from '../common/errorHandle'
 import dbService from '../service/dbService'
 import { Op } from 'sequelize'
-import { IClient } from '../types/client';
+import { IClient } from '../@types/client';
 import { IUsers } from '../model/Auth/User'
 export class AuthManager {
   decodePassword(password: string, hashPassword: string) {

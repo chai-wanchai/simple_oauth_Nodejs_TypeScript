@@ -2,7 +2,7 @@ import * as Joi from '@hapi/joi'
 import { commonValidation } from '../common/validation'
 import { Request, Response, NextFunction } from 'express';
 import { CommonError, ErrorHandle } from '../common/errorHandle';
-import { IClient } from '../types/client';
+import { IClient } from '../@types/client';
 
 export const schemaClient: Joi.SchemaMap = {
   client_id: Joi.string().required(),

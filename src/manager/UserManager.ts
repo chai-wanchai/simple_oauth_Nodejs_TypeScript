@@ -1,5 +1,5 @@
 import UserModel, { UserModelType } from '../service/dbService/user'
-import { UserAttributes } from '../types/users'
+import { UserAttributes } from '../@types/users'
 export class UserManager {
   public getResultDBToJson(data: any) {
     if (data) {

@@ -3,9 +3,9 @@ import manager from '../manager'
 import * as _ from 'lodash'
 import AuthManager from '../manager/AuthManager'
 import { ErrorHandle, IError, CommonError } from '../common/errorHandle';
-import { UserAttributes } from '../types/users'
-import { IToken } from '../types/token';
-import { IClient } from '../types/client';
+import { UserAttributes } from '../@types/users'
+import { IToken } from '../@types/token';
+import { IClient } from '../@types/client';
 
 export async function updateClient(req: Request, res: Response, next: NextFunction) {
   try {

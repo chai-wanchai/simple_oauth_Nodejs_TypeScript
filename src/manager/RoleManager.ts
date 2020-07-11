@@ -1,5 +1,5 @@
 import dbService from '../service/dbService'
-import { IRole, IUserRolePermission } from '../types/role';
+import { IRole, IUserRolePermission } from '../@types/role';
 import { ErrorHandle, IError, CommonError } from '../common/errorHandle';
 export class RoleManager {
   public async createRole(roleCode: string, roleName: string, description?: string, createdBy?: number, clientId?: number) {
