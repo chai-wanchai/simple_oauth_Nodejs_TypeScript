@@ -1,71 +1,27 @@
 
-import { Sequelize, Model, DataTypes, ModelAttributes, UUIDV4 } from 'sequelize';
-import { Client } from './Client';
-import { SystemConfig } from './SystemConfig';
-
-export interface IClientConfig {
-  clientId: number;
-  configCode: string;
-  configValue: string;
-  description: string;
-  createdBy: number;
-  updatedBy: number;
-  isActive: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-export const Attributes: ModelAttributes = {
-  clientId: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: Client,
-      key: 'clientId'
-    }
-  },
-  configCode: {
-    type: DataTypes.STRING,
-    references: {
-      model: SystemConfig,
-      key: 'configCode'
-    }
-  },
-  configValue: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  createdBy: {
-    type: DataTypes.INTEGER
-  },
-  updatedBy: {
-    type: DataTypes.INTEGER
-  },
-  isActive: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  }
-}
-
-export class ClientConfig extends Model<IClientConfig> {
-  public attributesValue!: IClientConfig
-  public clientId!: number;
-  public clientSecret!: string;
-  public clientName!: string;
-  public description!: string;
-  public createdBy!: number;
-  public updatedBy!: number;
-  public isActive!: boolean;
-  public createdAt?: Date;
-  public updatedAt?: Date;
-}
-
-export const clientConfigFactory = (sequelize: Sequelize) => {
-  ClientConfig.init(Attributes, {
-    sequelize,
-    tableName: 'ClientConfig',
-  })
-  return ClientConfig
+import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+@Entity({ name: 'client_config' })
+export class ClientConfig {
+  @PrimaryGeneratedColumn()
+  clientId?: number;
+  @Column({ unique: true })
+  configCode?: string;
+  @Column()
+  configValue?: string;
+  @Column({ type: 'text' })
+  description?: string;
+  @Column()
+  isActive?: boolean;
+  @Column({ nullable: true })
+  createdBy?: string;
+  @Column({ nullable: true })
+  updatedBy?: string;
+  @Column({ nullable: true })
+  deleted_by?: string
+  @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  created_at?: Date;
+  @UpdateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  updated_at?: Date;
+  @DeleteDateColumn({ type: 'timestamp with time zone' })
+  deleted_date?: Date;
 }

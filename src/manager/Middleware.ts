@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import JWT from '../common/jwt'
-import dbService from '../service/dbService'
+import dbService, { dbAuth } from '../service/dbService'
 import { IError, ErrorHandle, CommonError } from '../common/errorHandle';
-import Joi from '@hapi/joi';
+import * as Joi from '@hapi/joi';
 import { commonValidation } from '../common/validation';
 export class Middelware {
   async OwnerSystemClient(req: Request, res: Response, next: NextFunction) {
@@ -40,7 +40,7 @@ export class Middelware {
       }
       req.headers = commonValidation(schemaClient, req.headers, true)
       const { client_id, client_secret } = req.headers
-      const result = await dbService.dbModelAuth.client.findOne({ where: { clientId: client_id!, clientSecret: client_secret! } })
+      const result = await dbAuth.client.getClientInfo(parseInt(client_id as string, 10), client_secret as string)
       if (result) {
         const { isActive, clientName, description } = result
         if (isActive) {
@@ -89,7 +89,7 @@ export class Middelware {
   }
   async checkPermission(PermissionCode: Array<string>) {
     try {
-      
+
     } catch (error) {
       const err = new ErrorHandle(error)
       throw err;

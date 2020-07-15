@@ -5,17 +5,9 @@ import { ErrorHandle } from '../common/errorHandle';
 import { AuthValidation } from '../validation/AuthValidation';
 import Middelware from '../manager/Middleware';
 export const router = express.Router();
-/**
- * @swagger
- * /api/v1/oauth/token:
- *  post:
- *    description: Use to request all customers
- *    responses:
- *      '200':
- *        description: A successful response
- */
-router.post('/oauth/authorize', loginWithRefreshToken);
-router.get('/oauth/verify', Middelware.handleClientFromeRequet, Verify);
+
+// router.post('/oauth/authorize', loginWithRefreshToken);
+// router.get('/oauth/verify', Middelware.handleClientFromeRequet, Verify);
 router.post('/oauth/token', Middelware.handleClientFromeRequet, AuthValidation, AuthType);
 async function AuthType(req: express.Request, res: express.Response, next: express.NextFunction) {
   try {

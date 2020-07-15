@@ -7,7 +7,7 @@ import { ErrorHandle, IError, CommonError } from '../common/errorHandle';
 import { UserAttributes } from '../@types/users'
 import { IToken } from '../@types/token'
 import JWT  from '../common/jwt'
-import { IUsers } from '../model/Auth/User';
+import { Users } from '../model/Auth/User';
 
 export async function loginWithLine(req: Request, res: Response, next: NextFunction) {
   try {
@@ -15,14 +15,14 @@ export async function loginWithLine(req: Request, res: Response, next: NextFunct
     const { access_token } = req.body
     const line = await LineApi.verifyToken(access_token)
     const userAccount = line.data
-    let dataUser: UserAttributes = {
-      userName: userAccount.sub,
+    let dataUser: Users = {
+      username: userAccount.sub,
       email: userAccount.email,
       pictureUrl: userAccount.picture,
       uid: userAccount.sub,
       idp: 'line'
     }
-    const user: IUsers = await UserManager.findUserOrCreate(dataUser)
+    const user= await UserManager.findUserOrCreate(dataUser)
     const result = AuthManager.getTokenResult(user,client)
     res.status(200).json(result)
   } catch (error) {
@@ -43,8 +43,8 @@ export async function loginWithGoogle(req: Request, res: Response, next: NextFun
     const { access_token } = req.body
     const line = await LineApi.verifyToken(access_token)
     const userAccount = line.data
-    let dataUser: UserAttributes = {
-      userName: userAccount.sub,
+    let dataUser: Users = {
+      username: userAccount.sub,
       email: userAccount.email,
       pictureUrl: userAccount.picture,
       uid: userAccount.sub,
