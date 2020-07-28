@@ -1,33 +1,34 @@
-import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
-@Entity({ name: 'users' })
-export class Users {
+import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Token } from './Token';
+@Entity({ name: 'user' })
+export class User {
   @PrimaryGeneratedColumn()
-  userId?: number;
-  @Column()
-  firstName?: string;
-  @Column()
-  lastName?: string;
-  @Column()
+  user_id?: number;
+  @Column({ nullable: true })
+  first_name?: string;
+  @Column({ nullable: true })
+  last_name?: string;
+  @Column({ nullable: true })
   gender?: string;
-  @Column()
+  @Column({ nullable: true })
   dob?: string;
-  @Column()
-  phoneNumber?: string;
-  @Column()
+  @Column({ nullable: true })
+  phone_number?: string;
+  @Column({ nullable: true })
   username?: string;
   @Column()
   email?: string;
-  @Column()
-  pictureUrl?: string;
-  @Column()
+  @Column({ nullable: true })
+  picture_url?: string;
+  @Column({ nullable: true })
   password?: string;
-  @Column()
-  isActive?: boolean;
-  @Column()
-  isEmailVerify?: boolean;
-  @Column()
+  @Column({ default: true })
+  is_active?: boolean;
+  @Column({ default: false })
+  is_email_verify?: boolean;
+  @Column({ nullable: true })
   uid?: string;
-  @Column()
+  @Column({ nullable: true })
   idp?: string;
   @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
   created_at?: Date;
@@ -35,5 +36,8 @@ export class Users {
   updated_at?: Date;
   @DeleteDateColumn({ type: 'timestamp with time zone' })
   deleted_date?: Date;
+  @OneToMany(type=>Token,token=>token.user)
+  @JoinColumn()
+  token?: Token[]
 }
 

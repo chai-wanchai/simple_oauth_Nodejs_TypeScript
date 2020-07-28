@@ -56,10 +56,10 @@ app.get('/', (req: express.Request, res: express.Response, next: express.NextFun
   res.json({ body: JSON.stringify(req.query), param: JSON.stringify(req.params) })
 });
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-//app.use('/api/v1', oauth)
+app.use('/api/v1', oauth)
 app.use('/api/v1', users)
 // app.use('/api/v1', role)
-// app.use('/api/v1', client)
+app.use('/api/v1', client)
 app.use((err, req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   if (Array.isArray(err)) {

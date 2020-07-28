@@ -8,7 +8,7 @@ export class JWT {
       iat: Math.floor(Date.now() / 1000) - 30
     }
     const option: jwt.SignOptions = {
-      expiresIn: '1d',
+      expiresIn: config.jwt.expiresIn,
       ...Option
     }
     const token = jwt.sign(payloads, config.jwt.secret, option)

@@ -21,7 +21,7 @@ export class Database {
       password: config.postgres.password,
       database: config.postgres.database,
       entities: [
-        __dirname + '/entities/table/*.ts'
+        process.env.PWD+ '/src/model/Auth/*.ts'
       ],
       extra: {
         options: {
@@ -30,11 +30,12 @@ export class Database {
         max: 20 /* Number of max pool */
       },
       logging: true,
-      synchronize: process.env.NODE_ENV === 'localhost' ? true : false
+      synchronize: true
     };
     return options;
   }
 
 }
+
 const db = new Database()
 export default db

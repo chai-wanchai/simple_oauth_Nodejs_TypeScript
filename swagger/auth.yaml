@@ -1,0 +1,121 @@
+openapi: 3.0.1
+tags:
+  - name: Authorizations
+    description: Everything about your Authorizations
+schemes:
+  - "https"
+  - "http"
+paths:
+  /api/v1/oauth/token:
+    post:
+      tags:
+        - Authorizations
+      summary: Get user token
+      description: Get user token
+      requestBody:
+        description: Oauth Body as object
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/RequestTokenPassword"
+                - $ref: "#/components/schemas/RequestTokenRefresh"
+                - $ref: "#/components/schemas/RequestToken3Party"
+            example:
+              username: wanchai.23.chai@gmail.com
+              password: 'chai'
+              grant_type: password
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseToken"
+        "400":
+          description: Error Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/v1/oauth/verify:
+    get:
+      tags:
+        - Authorizations
+      security:
+        - bearerAuth: []
+      summary: Get user information with token header
+      responses:
+        "200":
+          description: A successful response
+parameters:
+  ClientId:
+    in: header
+    name: client_id
+    type: integer
+    required: true
+  ClientSecret:
+    in: header
+    name: client_secret
+    type: string
+    required: true
+components:
+  schemas:
+    ExampleRequestToken:
+      type: object
+      properties:
+        - $ref: "#/components/schemas/RequestTokenPassword"
+    RequestTokenPassword:
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        grant_type:
+          type: string
+          example: password
+      required:
+        - grant_type
+    RequestTokenRefresh:
+      properties:
+        refresh_token:
+          type: string
+        grant_type:
+          type: string
+          example: refresh_token
+      required:
+        - grant_type
+    RequestToken3Party:
+      properties:
+        access_token:
+          type: string
+        grant_type:
+          type: string
+          enum:
+            - line
+            - google
+      required:
+        - grant_type
+    ResponseToken:
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+        refresh_token:
+          type: string
+    ErrorResponse:
+      properties:
+        statusCode:
+          type: integer
+        errorMessage:
+          type: string
+        errorCode:
+          type: string
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+security:
+  - bearerAuth: []

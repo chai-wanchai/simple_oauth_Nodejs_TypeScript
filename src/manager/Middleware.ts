@@ -42,13 +42,13 @@ export class Middelware {
       const { client_id, client_secret } = req.headers
       const result = await dbAuth.client.getClientInfo(parseInt(client_id as string, 10), client_secret as string)
       if (result) {
-        const { isActive, clientName, description } = result
-        if (isActive) {
+        const { is_active, client_name, description } = result
+        if (is_active) {
           res.locals.client = result
           next()
         } else {
           err.setCustomError(403, 'Client is revoke.', 'CLIENT_REVOKE',
-            { isActive: isActive, clientName: clientName, description: description })
+            { isActive: is_active, clientName: client_name, description: description })
           throw err
         }
       } else {

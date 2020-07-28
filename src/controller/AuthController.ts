@@ -7,7 +7,7 @@ import { ErrorHandle, IError, CommonError } from '../common/errorHandle';
 import { UserAttributes } from '../@types/users'
 import { IToken } from '../@types/token'
 import JWT  from '../common/jwt'
-import { Users } from '../model/Auth/User';
+import { User } from '../model/Auth/User';
 
 export async function loginWithLine(req: Request, res: Response, next: NextFunction) {
   try {
@@ -15,10 +15,10 @@ export async function loginWithLine(req: Request, res: Response, next: NextFunct
     const { access_token } = req.body
     const line = await LineApi.verifyToken(access_token)
     const userAccount = line.data
-    let dataUser: Users = {
+    let dataUser: User = {
       username: userAccount.sub,
       email: userAccount.email,
-      pictureUrl: userAccount.picture,
+      picture_url: userAccount.picture,
       uid: userAccount.sub,
       idp: 'line'
     }
@@ -30,23 +30,16 @@ export async function loginWithLine(req: Request, res: Response, next: NextFunct
     err.sendErrorResponse(res)
   }
 }
-/**
- * This function is controller http request. It use to handle user from google login.
- * And get user profile to store in db then return result as token for authen other service
- * @param req {Object} Express.Request
- * @param res {Object} Express.Response
- * @param next {Object} Express.NextFunction
- */
 export async function loginWithGoogle(req: Request, res: Response, next: NextFunction) {
   try {
     const { client } = res.locals
     const { access_token } = req.body
     const line = await LineApi.verifyToken(access_token)
     const userAccount = line.data
-    let dataUser: Users = {
+    let dataUser: User = {
       username: userAccount.sub,
       email: userAccount.email,
-      pictureUrl: userAccount.picture,
+      picture_url: userAccount.picture,
       uid: userAccount.sub,
       idp: 'google'
     }
@@ -62,7 +55,7 @@ export async function loginWithUsernamePassword(req: Request, res: Response, nex
   try {
     const { client } = res.locals
     const { username, password } = req.body
-    const user: any = await UserManager.findUserByUsername(username)
+    const user: User = await UserManager.findUserByUsername(username)
     if (user) {
       AuthManager.decodePassword(password, user.password)
       const result = await AuthManager.getTokenResult(user,client)

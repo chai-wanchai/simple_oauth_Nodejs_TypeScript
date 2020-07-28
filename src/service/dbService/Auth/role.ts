@@ -1,4 +1,4 @@
-import { Users } from "../../../model/Auth/User";
+import { User } from "../../../model/Auth/User";
 import { getConnection, QueryRunner, Connection, Repository, UpdateResult, Like, Raw } from 'typeorm';
 import { mapDataPropertiesToDBColumns } from "../../../utils/dbUtils";
 import { Role } from "../../../model/Auth/Role";
@@ -17,12 +17,12 @@ class RoleDbService {
 	}
 	async findRoleById(id: number) {
 		this.getDb();
-		const result = await this.clientModel.findOne({ where: { roleId: id } })
+		const result = await this.clientModel.findOne({ where: { role_id: id } })
 		return result;
 	}
 	async getRoleInfoByRoleId(id: number) {
 		this.getDb()
-		const result = await this.clientModel.findOne({ where: { roleId: id } })
+		const result = await this.clientModel.findOne({ where: { role_id: id } })
 		return result
 	}
 
@@ -30,7 +30,7 @@ class RoleDbService {
 		this.getDb();
 		const columns = Object.keys(this.clientModel.metadata.propertiesMap);
 		let updateData = mapDataPropertiesToDBColumns(columns, entity);
-		const result = await this.clientModel.update({ roleId: id }, updateData);
+		const result = await this.clientModel.update({ role_id: id }, updateData);
 		return result;
 	}
 }

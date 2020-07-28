@@ -1,20 +1,18 @@
-import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 @Entity({ name: 'permission' })
 export class Permission {
-  @PrimaryGeneratedColumn()
-  permissionId?: number;
-  @Column({ unique: true })
-  permissionCode?: string;
+  @PrimaryColumn()
+  permission_code?: string;
   @Column({ nullable: true })
-  permissionName?: string;
+  permission_name?: string;
   @Column({ nullable: true })
   description?: string;
   @Column()
-  isActive?: boolean;
+  is_aActive?: boolean;
   @Column({ nullable: true })
-  createdBy?: string;
+  created_by?: string;
   @Column({ nullable: true })
-  updatedBy?: string;
+  updated_by?: string;
   @Column({ nullable: true })
   deleted_by?: string
   @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })

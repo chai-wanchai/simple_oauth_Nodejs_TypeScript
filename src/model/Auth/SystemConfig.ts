@@ -2,15 +2,15 @@ import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateCol
 @Entity({ name: 'system_config' })
 export class SystemConfig {
   @PrimaryColumn()
-  configCode?: string;
+  config_code?: string;
   @Column()
-  configName?: string;
+  config_name?: string;
   @Column()
-  configDefaultValue?: string;
+  config_default_value?: string;
   @Column()
   description?: string;
   @Column()
-  isActive?: boolean;
+  is_active?: boolean;
   @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
   created_at?: Date;
   @UpdateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })

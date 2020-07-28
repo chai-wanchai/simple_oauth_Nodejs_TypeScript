@@ -5,7 +5,9 @@ import { CommonError, ErrorHandle } from '../common/errorHandle'
 import dbService, { dbAuth } from '../service/dbService'
 import { Op } from 'sequelize'
 import { IClient } from '../@types/client';
-import { Users } from '../model/Auth/User'
+import { User } from '../model/Auth/User'
+import { Client } from '../model/Auth/Client'
+import { Token } from '../model/Auth/Token'
 export class AuthManager {
 	decodePassword(password: string, hashPassword: string) {
 		const result = bcrypt.compareSync(password, hashPassword)
@@ -28,20 +30,18 @@ export class AuthManager {
 		}
 		return userPayload
 	}
-	async getTokenResult(usersData: Users, client: IClient) {
-		const tokenResult = await dbAuth.token.createUserToken({})
+	async getTokenResult(usersData: User, client: Client) {
+		const tokenResult = await dbAuth.token.createUserToken({ is_active: true, user: { user_id: usersData.user_id } })
 		const payloadAccesstoken = {
 			...this.selectPayloadAccesstoken(usersData),
-			jti: tokenResult.tokenId,
-			sub: usersData.userId,
+			jti: tokenResult.token_id,
+			sub: usersData.user_id,
 			typ: 'access_token',
-			client_id: client.clientId
 		}
 		const payloadRefreshtoken = {
-			jti: tokenResult.refreshToken,
-			sub: usersData.userId,
-			typ: 'refresh_token',
-			client_id: client.clientId
+			jti: tokenResult.refresh_token,
+			sub: usersData.user_id,
+			typ: 'refresh_token'
 		}
 		const accessToken = JWT.encodeToken(payloadAccesstoken)
 		const refreshToken = JWT.encodeToken(payloadRefreshtoken, { expiresIn: "7d" })
@@ -81,7 +81,7 @@ export class AuthManager {
 
 	}
 	async revokeToken(tokenId: string) {
-		const tokenResult = await dbAuth.token.updateUserTokenByTokenId(tokenId, { isActive: false })
+		const tokenResult = await dbAuth.token.updateUserTokenByTokenId(tokenId, { is_active: false })
 		return tokenResult
 	}
 	selectPayloadAccesstoken(userPayload: any) {

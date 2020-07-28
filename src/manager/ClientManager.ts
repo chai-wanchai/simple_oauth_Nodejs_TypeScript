@@ -17,7 +17,7 @@ export class ClientManager {
       throw error
     }
   }
-  async updateClient(clientId: number, data: IClient) {
+  async updateClient(clientId: string, data: IClient) {
     try {
       const result = await dbAuth.client.updateClient(clientId,data)
       return result
@@ -25,7 +25,7 @@ export class ClientManager {
       throw error
     }
   }
-  async deleteClient(clientId: number) {
+  async deleteClient(clientId: string) {
     try {
       const resultDb = await dbAuth.client.deleteClient(clientId)     
       return resultDb

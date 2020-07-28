@@ -1,4 +1,4 @@
-import { Users } from "../../../model/Auth/User";
+import { User } from "../../../model/Auth/User";
 import { getConnection, QueryRunner, Connection, Repository, UpdateResult, Like, Raw } from 'typeorm';
 import { mapDataPropertiesToDBColumns } from "../../../utils/dbUtils";
 import { Token } from "../../../model/Auth/Token";
@@ -16,9 +16,9 @@ class TokenDbService {
 		const result = await this.tokenModel.save(entity)
 		return result;
 	}
-	async findActiveUserToken(tokenId: string) {
+	async findActiveUserToken(token_id: string) {
 		this.getDb();
-		const result = await this.tokenModel.findOne({ where: { isActive: true, tokenId: tokenId } })
+		const result = await this.tokenModel.findOne({ where: { isActive: true, token_id: token_id } })
 		return result;
 	}
 	async findActiveRefreshToken(refreshTokenId: string) {
@@ -26,11 +26,11 @@ class TokenDbService {
 		const result = await this.tokenModel.findOne({ where: { isActive: true, refreshToken: refreshTokenId } })
 		return result;
 	}
-	async updateUserTokenByTokenId(tokenId: string, entity: Token): Promise<UpdateResult> {
+	async updateUserTokenByTokenId(token_id: string, entity: Token): Promise<UpdateResult> {
 		this.getDb();
 		const columns = Object.keys(this.tokenModel.metadata.propertiesMap);
 		let updateData = mapDataPropertiesToDBColumns(columns, entity);
-		const result = await this.tokenModel.update({ tokenId: tokenId }, updateData);
+		const result = await this.tokenModel.update({ token_id: token_id }, updateData);
 		return result;
 	}
 }

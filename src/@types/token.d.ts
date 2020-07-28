@@ -5,6 +5,6 @@ export interface IToken {
   iat: number,
   exp: number,
   sub: number,
-  client_id: number
+  client_id: string
   [key: string]: any
 }

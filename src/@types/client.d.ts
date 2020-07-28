@@ -1,5 +1,5 @@
 export interface IClient {
-  clientId?: number;
+  clientId?: string;
   clientSecret?: string;
   clientName?: string;
   description?: string;

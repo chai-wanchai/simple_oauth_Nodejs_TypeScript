@@ -1,9 +1,9 @@
 
-import { Users } from '../model/Auth/User'
+import { User } from '../model/Auth/User'
 import { dbAuth } from '../service/dbService'
 export class UserManager {
 
-  async createUser(UserData: Users) {
+  async createUser(UserData: User) {
     const result = await dbAuth.users.createUser(UserData)
     return result
   }
@@ -12,10 +12,10 @@ export class UserManager {
     return result
   }
   async findUserByUsername(email: string) {
-    const result = await dbAuth.users.findUserByEmail(email)
+    const result = await dbAuth.users.findUserByEmailOrUsername(email)
     return result
   }
-  async findUserOrCreate(userData: Users) {
+  async findUserOrCreate(userData: User) {
     const result = await dbAuth.users.createUser(userData)
     return result
   }

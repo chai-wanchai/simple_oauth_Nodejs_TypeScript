@@ -12,7 +12,8 @@ export async function updateClient(req: Request, res: Response, next: NextFuncti
     const userPayload: IToken = res.locals.payload
     const client: IClient = res.locals.client
     const data: IClient = req.body
-    const result = await manager.client.updateClient(client.clientId!, data.clientName!, userPayload.sub, data.description,data.isActive)
+    data.updatedBy = userPayload.sub
+    const result = await manager.client.updateClient(client.clientId, data)
     res.json(result)
   } catch (error) {
     const err = new ErrorHandle(error)

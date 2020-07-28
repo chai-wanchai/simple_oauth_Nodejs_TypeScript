@@ -1,16 +1,17 @@
-import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne, PrimaryColumn, OneToMany } from 'typeorm';
+import { ClientConfig } from './ClientConfig';
 @Entity({ name: 'client' })
 export class Client {
-  @Column({ unique: true })
-  clientId?: number;
+  @PrimaryColumn({ unique: true })
+  client_id?: string;
   @Column()
-  clientSecret?: string;
+  client_secret?: string;
   @Column()
-  clientName?: string;
+  client_name?: string;
   @Column()
   description?: string;
   @Column()
-  isActive?: boolean;
+  is_active?: boolean;
   @Column({ nullable: true })
   created_by?: string;
   @Column({ nullable: true })
@@ -23,4 +24,7 @@ export class Client {
   updated_at?: Date;
   @DeleteDateColumn({ type: 'timestamp with time zone' })
   deleted_date?: Date;
+  @OneToMany(type => ClientConfig, clientConfig => clientConfig.client)
+  @JoinColumn()
+  clientConfig?: ClientConfig[]
 }
