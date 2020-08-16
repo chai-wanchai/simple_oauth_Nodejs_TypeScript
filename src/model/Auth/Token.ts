@@ -1,47 +1,23 @@
+import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne, PrimaryColumn, Generated } from 'typeorm';
+import { User } from './User';
 
-import { Sequelize, Model, DataTypes, ModelAttributes, UUIDV4 } from 'sequelize';
-import { IUsers } from './User';
-
-export interface IToken {
-  tokenId: string;
-  refreshToken: string;
-  isActive: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-export const Attributes: ModelAttributes = {
-  tokenId: {
-    type: DataTypes.UUID,
-    primaryKey: true,
-    unique: true,
-    defaultValue: UUIDV4
-  },
-  refreshToken: {
-    type: DataTypes.UUID,
-    unique: true,
-    defaultValue: UUIDV4
-  },
-  isActive: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  }
-}
-
-export class Token extends Model<IToken> {
-  public attributesValue!: IToken
-  public tokenId!: string;
-  public refreshToken!: string;
-  public isActive!: boolean;
-  public createdAt?: Date;
-  public updatedAt?: Date;
-  public User!: IUsers
-}
-
-export const tokenFactory = (sequelize: Sequelize) => {
-  Token.init(Attributes, {
-    sequelize,
-    tableName: 'Token',
-  })
-  return Token
+@Entity({ name: 'token' })
+export class Token {
+  @PrimaryColumn({ type: 'uuid' })
+  @Generated("uuid")
+  token_id?: string;
+  @Column({ type: 'uuid' })
+  @Generated("uuid")
+  refresh_token?: string;
+  @Column({ default: true })
+  is_active?: boolean;
+  @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  created_at?: Date;
+  @UpdateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  updated_at?: Date;
+  @DeleteDateColumn({ type: 'timestamp with time zone' })
+  deleted_date?: Date;
+  @ManyToOne(type => User, user => user.token, { nullable: true })
+  @JoinColumn({ name: 'user_id' })
+  user?: User
 }

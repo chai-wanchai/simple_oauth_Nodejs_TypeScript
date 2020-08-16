@@ -1,37 +1,29 @@
-import UserModel, { UserModelType } from '../service/dbService/user'
-import { UserAttributes } from '../@types/users'
+
+import { User } from '../model/Auth/User'
+import { dbAuth } from '../service/dbService'
 export class UserManager {
-  public getResultDBToJson(data: any) {
-    if (data) {
-      return JSON.parse(JSON.stringify(data))
-    } else {
-      return data
-    }
-  }
-  async createUser(UserData: UserAttributes) {
-    const result = await UserModel.upsert(UserData, { returning: true })
-    return this.getResultDBToJson(result[0])
+
+  async createUser(UserData: User) {
+    const result = await dbAuth.users.createUser(UserData)
+    return result
   }
   async findUserByUid(uid: string) {
-    const result = await UserModel.findOne({
-      where: {
-        uid: uid
-      }
-    })
-    return this.getResultDBToJson(result)
+    const result = await dbAuth.users.findUserByUid(uid)
+    return result
+  }
+  async updateUserById(id: number,userInfo:User) {
+    const result = await dbAuth.users.updateUserById(userInfo,id)
+  }
+  async findUserById(id: number) {
+    const result = await dbAuth.users.findUserById(id)
+    return result
   }
   async findUserByUsername(email: string) {
-    const result = await UserModel.findOne({
-      where: {
-        email: email
-      }
-    })
-
-    return this.getResultDBToJson(result)
-
+    const result = await dbAuth.users.findUserByEmailOrUsername(email)
+    return result
   }
-  async findUserOrCreate(userData: UserAttributes): Promise<any> {
-    const result = await UserModel.findOrCreate({ where: { uid: userData.uid }, defaults: userData } as any)
+  async findUserOrCreate(userData: User) {
+    const result = await dbAuth.users.createUser(userData)
     return result
   }
 }

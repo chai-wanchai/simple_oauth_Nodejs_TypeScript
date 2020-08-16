@@ -1,4 +1,4 @@
-import dbService from '../service/dbService'
+import dbService, { dbAuth } from '../service/dbService'
 import { IRole, IUserRolePermission } from '../@types/role';
 import { ErrorHandle, IError, CommonError } from '../common/errorHandle';
 export class RoleManager {
@@ -11,20 +11,20 @@ export class RoleManager {
       createdBy: createdBy,
       updatedBy: createdBy
     }
-    const result = await dbService.dbModelAuth.role.upsert(roleData, { returning: true })
+    const result = await dbAuth.role.createRole(roleData)
     return result;
   }
-  public async createUserRole(userId: number, roleId: number) {
-    const userRole: IUserRolePermission = {
-      roleId: roleId,
-      userId: userId
-    }
-    const result = await dbService.dbModelAuth.role.upsert(userRole, { returning: true })
-    return result;
-  }
-  public async checkRole(roleCode: string) {
-    const result = await dbService.dbModelAuth.role.findOne({ where: { roleCode: roleCode } })
-    return result;
-  }
+  // public async createUserRole(userId: number, roleId: number) {
+  //   const userRole: IUserRolePermission = {
+  //     roleId: roleId,
+  //     userId: userId
+  //   }
+  //   const result = await dbService.dbModelAuth.role.upsert(userRole, { returning: true })
+  //   return result;
+  // }
+  // public async checkRole(roleCode: string) {
+  //   const result = await dbService.dbModelAuth.role.findOne({ where: { roleCode: roleCode } })
+  //   return result;
+  // }
 }
 export default new RoleManager()

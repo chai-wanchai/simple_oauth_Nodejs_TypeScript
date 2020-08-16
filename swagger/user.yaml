@@ -1,0 +1,87 @@
+/api/v1/user/register:
+  post:
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    summary: Get user information with token header
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserModel'
+    responses:
+      "200":
+        description: A successful response
+/api/v1/user/profile:
+  get:
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    summary: Get user information with access token
+    responses:
+      "200":
+        description: A successful response
+  post:
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    summary: Get user information with username or email
+    requestBody:
+      content:
+        application/json:
+          schema:
+             properties:
+                email:
+                  type: string
+    responses:
+      "200":
+        description: A successful response
+/api/v1/user/profile/update/{user_id}:
+  patch:
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    summary: Update user information by user_id
+    parameters:
+      - in: path
+        name: user_id
+        description: 'Update user information'
+        schema:
+          type: integer
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserModel'
+    responses:
+      "200":
+        description: A successful response
+
+components:
+  schemas:
+    UserModel:
+      properties:
+        email:
+          type: string
+          required: true
+          example: 'admin@oauth.com'
+        password:
+          type: string
+          required: true
+          example: '1234'
+        firstName:
+          type: string
+        lastName:
+          type: string
+        gender:
+          type: string
+          example: 'M'
+        dob:
+          type: string
+          example: '1990-01-01'
+        uid:
+          type: string

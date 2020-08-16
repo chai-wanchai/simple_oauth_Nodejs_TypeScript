@@ -1,63 +1,22 @@
-
-import { Sequelize, Model, DataTypes, ModelAttributes, UUIDV4 } from 'sequelize';
-
-export interface IPermission {
-  permissionId: number;
-  permissionCode: string;
-  permissionName: string;
-  description: string;
-  createdBy: number;
-  updatedBy: number;
-  isActive: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-export const Attributes: ModelAttributes = {
-  permissionId: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  permissionCode: {
-    type: DataTypes.STRING,
-    unique: true,
-    allowNull: false
-  },
-  permissionName: {
-    type: DataTypes.STRING
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  createdBy: {
-    type: DataTypes.INTEGER
-  },
-  updatedBy: {
-    type: DataTypes.INTEGER
-  },
-  isActive: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  }
-}
-export class Permission extends Model<IPermission> {
-  public attributesValue!: IPermission
-  public permissionId!: number;
-  public permissionCode!: string;
-  public permissionName!: string;
-  public description!: string;
-  public createdBy!: number;
-  public updatedBy!: number;
-  public isActive!: boolean;
-  public createdAt?: Date;
-  public updatedAt?: Date;
-}
-
-export const permissionFactory = (sequelize: Sequelize) => {
-  Permission.init(Attributes, {
-    sequelize,
-    tableName: 'Permission',
-  })
-  return Permission
+import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+@Entity({ name: 'permission' })
+export class Permission {
+  @PrimaryColumn()
+  permission_code?: string;
+  @Column({ nullable: true })
+  permission_desc?: string;
+  @Column()
+  is_active?: boolean;
+  @Column({ nullable: true })
+  created_by?: string;
+  @Column({ nullable: true })
+  updated_by?: string;
+  @Column({ nullable: true })
+  deleted_by?: string
+  @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  created_at?: Date;
+  @UpdateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  updated_at?: Date;
+  @DeleteDateColumn({ type: 'timestamp with time zone' })
+  deleted_date?: Date;
 }

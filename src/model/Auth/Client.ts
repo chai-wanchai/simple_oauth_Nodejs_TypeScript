@@ -1,65 +1,30 @@
-
-import { Sequelize, Model, DataTypes, ModelAttributes, UUIDV4 } from 'sequelize';
-
-export interface IClient {
-  clientId: number;
-  clientSecret: string;
-  clientName: string;
-  description: string;
-  createdBy: number;
-  updatedBy: number;
-  isActive: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-export const Attributes: ModelAttributes = {
-  clientId: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  clientSecret: {
-    type: DataTypes.STRING,
-    defaultValue: UUIDV4,
-    unique: true
-  },
-  clientName: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  createdBy: {
-    type: DataTypes.INTEGER
-  },
-  updatedBy: {
-    type: DataTypes.INTEGER
-  },
-  isActive: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  }
-}
-
-export class Client extends Model<IClient> {
-  public attributesValue!: IClient
-  public clientId!: number;
-  public clientSecret!: string;
-  public clientName!: string;
-  public description!: string;
-  public createdBy!: number;
-  public updatedBy!: number;
-  public isActive!: boolean;
-  public createdAt?: Date;
-  public updatedAt?: Date;
-}
-
-export const clientFactory = (sequelize: Sequelize) => {
-  Client.init(Attributes, {
-    sequelize,
-    tableName: 'Client',
-  })
-  return Client
+import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne, PrimaryColumn, OneToMany } from 'typeorm';
+import { ClientConfig } from './ClientConfig';
+@Entity({ name: 'client' })
+export class Client {
+  @PrimaryColumn({ unique: true })
+  client_id?: string;
+  @Column()
+  client_secret?: string;
+  @Column()
+  client_name?: string;
+  @Column()
+  description?: string;
+  @Column()
+  is_active?: boolean;
+  @Column({ nullable: true })
+  created_by?: string;
+  @Column({ nullable: true })
+  updated_by?: string;
+  @Column({ nullable: true })
+  deleted_by?: string
+  @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  created_at?: Date;
+  @UpdateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  updated_at?: Date;
+  @DeleteDateColumn({ type: 'timestamp with time zone' })
+  deleted_date?: Date;
+  @OneToMany(type => ClientConfig, clientConfig => clientConfig.client)
+  @JoinColumn()
+  clientConfig?: ClientConfig[]
 }

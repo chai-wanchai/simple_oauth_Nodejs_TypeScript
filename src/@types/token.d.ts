@@ -4,7 +4,7 @@ export interface IToken {
   typ: string,
   iat: number,
   exp: number,
-  sub: number,
-  client_id: number
+  sub: any,
+  client_id: string
   [key: string]: any
 }

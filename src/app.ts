@@ -1,7 +1,7 @@
-import express, { Request, Response, NextFunction } from 'express';
-import morgan from 'morgan';
-import compression from "compression";
-import bodyParser from "body-parser";
+import * as express from 'express';
+import * as morgan from 'morgan';
+import * as compression from "compression";
+import * as bodyParser from "body-parser";
 import oauth from './routers/auth.router'
 import users from './routers/users.router'
 import role from './routers/role.router'
@@ -14,7 +14,6 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const port = process.env.PORT || config.url.port
 const swaggerOptions = {
-
   swaggerDefinition: {
     openapi: "3.0.1",
     info: {
@@ -53,15 +52,15 @@ app.use(morgan('dev'))
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
+app.get('/', (req: express.Request, res: express.Response, next: express.NextFunction) => {
   res.json({ body: JSON.stringify(req.query), param: JSON.stringify(req.params) })
 });
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use('/api/v1', oauth)
+app.use('/api/v1/auth', oauth)
 app.use('/api/v1', users)
-app.use('/api/v1', role)
+// app.use('/api/v1', role)
 app.use('/api/v1', client)
-app.use((err: any, req: Request, res: Response, next) => {
+app.use((err, req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   if (Array.isArray(err)) {
     // Custom Error format [body, statusCode]

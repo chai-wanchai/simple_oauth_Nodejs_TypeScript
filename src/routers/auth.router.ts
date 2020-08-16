@@ -1,33 +1,42 @@
 import * as express from 'express';
-import { loginWithLine, loginWithGoogle, loginWithUsernamePassword, loginWithRefreshToken } from '../controller/AuthController'
+import * as controller from '../controller/AuthController'
 import JWT from '../common/jwt'
 import { ErrorHandle } from '../common/errorHandle';
 import { AuthValidation } from '../validation/AuthValidation';
-import Middelware from '../manager/Middleware';
+import  Middelware  from '../manager/Middleware';
+
 export const router = express.Router();
-/**
- * @swagger
- * /api/v1/oauth/token:
- *  post:
- *    description: Use to request all customers
- *    responses:
- *      '200':
- *        description: A successful response
- */
-router.post('/oauth/authorize', loginWithRefreshToken);
-router.get('/oauth/verify', Middelware.handleClientFromeRequet, Verify);
-router.post('/oauth/token', Middelware.handleClientFromeRequet, AuthValidation, AuthType);
+
+// router.post('/oauth/authorize', loginWithRefreshToken);
+router.get('/verify', Verify);
+router.post('/token', AuthValidation, AuthType);
+router.post('/role/search', Middelware.handleToken, controller.searchRole);
+router.post('/role/create', Middelware.handleToken, controller.createRole);
+router.get('/role/list', Middelware.handleToken, controller.getAllRole);
+router.patch('/role/update/:roleId', Middelware.handleToken, controller.updateRoleByRoleId);
+router.delete('/role/delete/:roleId', Middelware.handleToken, controller.deleteRoleById);
+router.post('/permission/search', Middelware.handleToken, controller.searchPermission);
+router.post('/permission/create', Middelware.handleToken, controller.createPermission);
+router.get('/permission/list', Middelware.handleToken, controller.getAllPermission);
+router.patch('/permission/update/:permissionCode', Middelware.handleToken, controller.updatePermissionByCode);
+router.delete('/permission/delete/:permissionCode', Middelware.handleToken, controller.deletePermissionByCode);
+router.post('/role-permission/search', Middelware.handleToken, controller.searchRolePermission);
+router.get('/role-permission/list', Middelware.handleToken, controller.getAllRolePermission);
+router.post('/role-permission/create', Middelware.handleToken, controller.createRolePermission);
+router.post('/role-permission/create/bulk', Middelware.handleToken, controller.bulkCreateRolePermission);
+router.patch('/role-permission/update/:rpId', Middelware.handleToken, controller.updateRolePermissionById);
+router.delete('/role-permission/delete/:rpId', Middelware.handleToken, controller.deleteRolePermissionById);
 async function AuthType(req: express.Request, res: express.Response, next: express.NextFunction) {
   try {
     const { grant_type } = req.body
     switch (grant_type) {
-      case 'password': loginWithUsernamePassword(req, res, next)
+      case 'password': controller.loginWithUsernamePassword(req, res, next)
         break;
-      case 'refresh_token': loginWithRefreshToken(req, res, next)
+      case 'refresh_token': controller.loginWithRefreshToken(req, res, next)
         break;
-      case 'google': loginWithGoogle(req, res, next)
+      case 'google': controller.loginWithGoogle(req, res, next)
         break;
-      case 'line': loginWithLine(req, res, next)
+      case 'line': controller.loginWithLine(req, res, next)
         break;
       default: throw Error('Invalid Grant Type')
     }

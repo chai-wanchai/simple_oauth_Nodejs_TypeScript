@@ -1,64 +1,29 @@
-
-import { Sequelize, Model, DataTypes, ModelAttributes, UUIDV4 } from 'sequelize';
-
-export interface IRole {
-  roleId: number;
-  roleCode: string;
-  roleName: string;
-  description: string;
-  createdBy: number;
-  updatedBy: number;
-  isActive: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-export const Attributes: ModelAttributes = {
-  roleId: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  roleCode: {
-    type: DataTypes.STRING,
-    unique: true,
-    allowNull: false
-  },
-  roleName: {
-    type: DataTypes.STRING
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  createdBy: {
-    type: DataTypes.INTEGER
-  },
-  updatedBy: {
-    type: DataTypes.INTEGER
-  },
-  isActive: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  }
-}
-
-export class Role extends Model<IRole> {
-  public attributesValue!: IRole
-  public roleId!: number;
-  public roleCode!: string;
-  public roleName!: string;
-  public description!: string;
-  public createdBy!: number;
-  public updatedBy!: number;
-  public isActive!: boolean;
-  public createdAt?: Date;
-  public updatedAt?: Date;
-}
-
-export const roleFactory = (sequelize: Sequelize) => {
-  Role.init(Attributes, {
-    sequelize,
-    tableName: 'Role',
-  })
-  return Role
+import { Column, PrimaryGeneratedColumn, Entity, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { RolePermission } from './RolePermission';
+@Entity({ name: 'role' })
+export class Role {
+  @PrimaryGeneratedColumn()
+  role_id?: number;
+  @Column({ unique: true })
+  role_code?: string;
+  @Column({ nullable: true })
+  role_desc?: string;
+  @Column()
+  is_active?: boolean;
+  @Column({ nullable: true })
+  created_by?: string;
+  @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  created_date?: Date;
+  @Column({ nullable: true })
+  updated_by?: string;
+  @UpdateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
+  updated_date?: Date;
+  @DeleteDateColumn({ type: 'timestamp with time zone' })
+  deleted_date?: Date;
+  @Column({ nullable: true })
+  deleted_by?: string;
+  [key: string]: any;
+  @OneToMany(type => RolePermission, role => role.role)
+  @JoinColumn()
+  role_permission?: RolePermission[];
 }

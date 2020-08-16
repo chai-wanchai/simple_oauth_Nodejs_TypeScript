@@ -1,12 +1,13 @@
 import * as express from 'express';
 import Middelware from '../manager/Middleware'
-import { registerUser } from '../controller/RegisterController';
+import { registerUser, getUser, updateUser } from '../controller/UserController';
 import UserValidataion from '../validation/UserValidate';
 export const router = express.Router();
 
-router.get('/users/profile', Middelware.handleToken, getuser);
-router.post('/users/register', UserValidataion.UserRegister, registerUser)
-function getuser(req: express.Request, res: express.Response, next: express.NextFunction) {
-  res.json(res.locals)
-}
+router.get('/user/profile', Middelware.handleToken, getUser);
+router.post('/user/profile', Middelware.handleToken, getUser);
+router.patch('/user/profile/update/:user_id', Middelware.handleToken, updateUser);
+router.delete('/user/profile/delete/:user_id', Middelware.handleToken, getUser);
+router.post('/user/register', UserValidataion.UserRegister, registerUser)
+
 export default router;

@@ -1,0 +1,5 @@
+{
+  "watch": ["src","swagger","."],
+  "exec": "ts-node src/server.ts",
+  "ext": "js ts yaml"
+}

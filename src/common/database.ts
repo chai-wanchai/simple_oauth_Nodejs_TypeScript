@@ -1,35 +1,41 @@
 import { Sequelize } from 'sequelize'
-import dotenv from 'dotenv'
 import config from '../../config';
-dotenv.config()
+import { createConnection, ConnectionOptions, Connection } from 'typeorm';
 var pg = require('pg');
 pg.defaults.ssl = true;
 export interface DBInterface {
   connection: Sequelize;
 }
 export class Database {
-  private connectionConfig: any = null
-  public connection: Sequelize = new Sequelize(`${process.env.DATABASE_URL}`, { ssl: true, logging: false })
-  constructor(connectionString?: string, database?: string, username?: string, password?: string, host?: string, dialect?: string) {
-    let stringConntection = process.env.DATABASE_URL as string;
-    if (connectionString) {
-      stringConntection = connectionString;
-    } else {
-      stringConntection = `${dialect || 'postgres'}://${username}:${password}@${host}`;
-    }
-    this.connectionConfig = stringConntection;
+ 
+  public async getConnection() {
+    const connection = await createConnection(this.getOption())
+    return connection
   }
-  public init() {
-    this.connection = new Sequelize(this.connectionConfig, { ssl: true, logging: false })
-    this.connection.authenticate()
-      .then(() => {
-        console.log('Connection has been established successfully.');       
-      })
-      .catch((err: any) => {
-        console.error('Unable to connect to the database:\n', err);
-      });
-    return this.connection
-  } 
+  public getOption() {
+    const options: ConnectionOptions = {
+      type: 'postgres',
+      host: config.postgres.host,
+      port: config.postgres.port,
+      username: config.postgres.username,
+      password: config.postgres.password,
+      database: config.postgres.database,
+      entities: [
+        process.env.PWD+ '/src/model/Auth/*.ts'
+      ],
+      extra: {
+        options: {
+          encrypt: true
+        },
+        max: 20 /* Number of max pool */
+      },
+      logging: false,
+      synchronize: true
+    };
+    return options;
+  }
+
 }
-const db = new Database(config.postgres.dbUrl)
+
+const db = new Database()
 export default db
