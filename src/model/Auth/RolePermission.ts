@@ -5,7 +5,7 @@ import { Permission } from './Permission';
 export class RolePermission {
 	@Column()
 	@Generated('increment')
-	id?: number;
+	rp_id?: number;
 	@ManyToOne(type => Role, { primary: true })
 	@JoinColumn({ name: 'role_id' })
 	role?: Role;

@@ -6,18 +6,18 @@ import { IPage } from "../../../@types/search";
 import { Permission } from "../../../model/Auth/Permission";
 import { RolePermission } from "../../../model/Auth/RolePermission";
 class RoleDbService {
-	connection: Connection;
-	roleModel: Repository<Role>;
-	permissionModel: Repository<Permission>;
-	rolePermissionModel: Repository<RolePermission>;
-	getDb() {
-		this.connection = getConnection();
-		this.roleModel = this.connection.getRepository(Role);
-		this.permissionModel = this.connection.getRepository(Permission);
-		this.rolePermissionModel = this.connection.getRepository(RolePermission);
-		return this.connection;
-	}
-	async searchRole(paging: IPage, criteria: any) {
+  connection: Connection;
+  roleModel: Repository<Role>;
+  permissionModel: Repository<Permission>;
+  rolePermissionModel: Repository<RolePermission>;
+  getDb() {
+    this.connection = getConnection();
+    this.roleModel = this.connection.getRepository(Role);
+    this.permissionModel = this.connection.getRepository(Permission);
+    this.rolePermissionModel = this.connection.getRepository(RolePermission);
+    return this.connection;
+  }
+  async searchRole(paging: IPage, criteria: any) {
     this.getDb();
     const [result, total] = await this.roleModel.createQueryBuilder('role')
       .skip(paging.showItemPerPage * (paging.activePage - 1))
@@ -109,20 +109,20 @@ class RoleDbService {
       .createQueryBuilder()
       .insert()
       .values(data)
-      .orUpdate({ conflict_target: ['role_id', 'permission_code'], overwrite: ['updated_by', 'is_active','updated_date'] })
+      .orUpdate({ conflict_target: ['role_id', 'permission_code'], overwrite: ['updated_by', 'is_active', 'updated_date'] })
       .execute();
     return result;
   }
-  async updateRolePermissionById(id: number, data: RolePermission) {
+  async updateRolePermissionById(id: any, data: RolePermission) {
     this.getDb();
     const columns = Object.keys(this.rolePermissionModel.metadata.propertiesMap);
     let updateData = mapDataPropertiesToDBColumns(columns, data);
-    const result = await this.rolePermissionModel.update(id, updateData);
+    const result = await this.rolePermissionModel.update({ rp_id: id }, updateData);
     return result;
   }
-  async deleteRolePermissionById(id: number) {
+  async deleteRolePermissionById(id: any) {
     this.getDb();
-    const result = await this.rolePermissionModel.softDelete(id);
+    const result = await this.rolePermissionModel.softDelete({ rp_id: id });
     return result;
   }
 }

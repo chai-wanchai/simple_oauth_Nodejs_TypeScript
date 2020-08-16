@@ -4,11 +4,9 @@ export class Permission {
   @PrimaryColumn()
   permission_code?: string;
   @Column({ nullable: true })
-  permission_name?: string;
-  @Column({ nullable: true })
-  description?: string;
+  permission_desc?: string;
   @Column()
-  is_aActive?: boolean;
+  is_active?: boolean;
   @Column({ nullable: true })
   created_by?: string;
   @Column({ nullable: true })
