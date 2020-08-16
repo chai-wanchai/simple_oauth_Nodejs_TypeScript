@@ -29,7 +29,7 @@ export class Database {
         },
         max: 20 /* Number of max pool */
       },
-      logging: true,
+      logging: false,
       synchronize: true
     };
     return options;

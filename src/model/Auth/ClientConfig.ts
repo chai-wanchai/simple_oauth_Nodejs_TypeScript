@@ -11,7 +11,7 @@ export class ClientConfig {
   @JoinColumn({ name: 'config_code' })
   config?: string;
   @Column()
-  configValue?: string;
+  config_value?: string;
   @Column({ type: 'text', nullable: true })
   description?: string;
   @Column({ default: true })

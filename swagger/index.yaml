@@ -1,0 +1,27 @@
+openapi: 3.0.1
+tags:
+  - name: Authorizations
+    description: Everything about your Authorizations
+schemes:
+  - "https"
+  - "http"
+security:
+  - bearerAuth: []
+components:
+  schemas:
+    PagingCriteria:
+      properties:
+        showItemPerPage:
+          type: integer
+          example: 5
+        totalPage:
+          type: integer
+          example: 10
+        activePage:
+          type: integer
+          example: 1
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes

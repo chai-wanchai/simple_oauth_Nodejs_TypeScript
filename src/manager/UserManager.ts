@@ -11,6 +11,13 @@ export class UserManager {
     const result = await dbAuth.users.findUserByUid(uid)
     return result
   }
+  async updateUserById(id: number,userInfo:User) {
+    const result = await dbAuth.users.updateUserById(userInfo,id)
+  }
+  async findUserById(id: number) {
+    const result = await dbAuth.users.findUserById(id)
+    return result
+  }
   async findUserByUsername(email: string) {
     const result = await dbAuth.users.findUserByEmailOrUsername(email)
     return result

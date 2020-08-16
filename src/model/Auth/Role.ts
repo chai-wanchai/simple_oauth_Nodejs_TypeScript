@@ -6,18 +6,23 @@ export class Role {
   role_id?: number;
   @Column({ unique: true })
   role_code?: string;
-  @Column()
-  role_name?: string;
-  @Column()
-  description?: string;
+  @Column({ nullable: true })
+  role_desc?: string;
   @Column()
   is_active?: boolean;
+  @Column({ nullable: true })
+  created_by?: string;
   @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
-  created_at?: Date;
+  created_date?: Date;
+  @Column({ nullable: true })
+  updated_by?: string;
   @UpdateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
-  updated_at?: Date;
+  updated_date?: Date;
   @DeleteDateColumn({ type: 'timestamp with time zone' })
   deleted_date?: Date;
+  @Column({ nullable: true })
+  deleted_by?: string;
+  [key: string]: any;
   @OneToMany(type => RolePermission, role => role.role)
   @JoinColumn()
   role_permission?: RolePermission[];

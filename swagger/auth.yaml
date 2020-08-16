@@ -1,12 +1,4 @@
-openapi: 3.0.1
-tags:
-  - name: Authorizations
-    description: Everything about your Authorizations
-schemes:
-  - "https"
-  - "http"
-paths:
-  /api/v1/oauth/token:
+/api/v1/auth/token:
     post:
       tags:
         - Authorizations
@@ -18,12 +10,12 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: "#/components/schemas/RequestTokenPassword"
-                - $ref: "#/components/schemas/RequestTokenRefresh"
-                - $ref: "#/components/schemas/RequestToken3Party"
+                - $ref: "#/components/requestBodies/RequestTokenPassword"
+                - $ref: "#/components/requestBodies/RequestTokenRefresh"
+                - $ref: "#/components/requestBodies/RequestToken3Party"
             example:
-              username: wanchai.23.chai@gmail.com
-              password: 'chai'
+              username: admin@oauth.com
+              password: '1234'
               grant_type: password
       responses:
         "200":
@@ -31,40 +23,316 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseToken"
+                $ref: "#/components/responses/ResponseToken"
         "400":
           description: Error Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  /api/v1/oauth/verify:
-    get:
+                $ref: "#/components/responses/ErrorResponse"
+/api/v1/auth/verify:
+  get:
+    tags:
+      - Authorizations
+    security:
+      - bearerAuth: []
+    summary: Get user information with token header
+    responses:
+      "200":
+        description: A successful response
+/api/v1/auth/role/search:
+  post:
+    tags:
+      - Authorizations
+    security:
+      - bearerAuth: []
+    summary: Search role
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/requestBodies/RoleSearch"
+    responses:
+      "200":
+        description: A successful response
+/api/v1/auth/role/list:
+  get:
+    tags:
+      - Authorizations
+    summary: Get all Role
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: A successful response
+/api/v1/auth/role/create:
+  post:
       tags:
         - Authorizations
+      summary: Create Role
       security:
         - bearerAuth: []
-      summary: Get user information with token header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleModel'
       responses:
-        "200":
+        '200':
           description: A successful response
-parameters:
-  ClientId:
-    in: header
-    name: client_id
-    type: integer
-    required: true
-  ClientSecret:
-    in: header
-    name: client_secret
-    type: string
-    required: true
+/api/v1/auth/role/update/{roleId}:
+  patch:
+      tags:
+        - Authorizations
+      summary: Update Role By roleId
+      parameters:
+        - in: path
+          name: roleId
+          required: true
+          description: 'Input roleId as number'
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleModel'
+      responses:
+        '200':
+          description: A successful response
+/api/v1/auth/role/delete/{roleId}:
+  delete:
+      tags:
+        - Authorizations
+      summary: Delete Role By roleId
+      parameters:
+        - in: path
+          name: roleId
+          required: true
+          description: 'Input roleId as number'
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A successful response
+/api/v1/auth/permission/search:
+  post:
+    tags:
+      - Authorizations
+    security:
+      - bearerAuth: []
+    summary: Search permission
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/requestBodies/PermissionSearch"
+    responses:
+      "200":
+        description: A successful response
+/api/v1/auth/permission/list:
+  get:
+    tags:
+      - Authorizations
+    summary: Get all Permission
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: A successful response
+/api/v1/auth/permission/create:
+  post:
+      tags:
+        - Authorizations
+      summary: Create Permission
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionModel'
+      responses:
+        '200':
+          description: A successful response
+/api/v1/auth/permission/update/{permissionCode}:
+  patch:
+      tags:
+        - Authorizations
+      summary: Update Permission By permissionCode
+      parameters:
+        - in: path
+          name: permissionCode
+          required: true
+          description: 'Input permissionCode as string'
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionModel'
+      responses:
+        '200':
+          description: A successful response
+/api/v1/auth/permission/delete/{permissionCode}:
+  delete:
+      tags:
+        - Authorizations
+      summary: Delete Role By permissionCode
+      parameters:
+        - in: path
+          name: permissionCode
+          required: true
+          description: 'Input permissionCode as string'
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A successful response
+/api/v1/auth/role-permission/search:
+  post:
+    tags:
+      - Authorizations
+    security:
+      - bearerAuth: []
+    summary: Search role permission
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/requestBodies/RolePermissionSearch"
+    responses:
+      "200":
+        description: A successful response
+/api/v1/auth/role-permission/list:
+  get:
+    tags:
+      - Authorizations
+    summary: Get all Role Permission
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: A successful response
+/api/v1/auth/role-permission/create/bulk:
+  post:
+      tags:
+        - Authorizations
+      summary: Create Role Permission
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RolePermissionModel'
+      responses:
+        '200':
+          description: A successful response
+/api/v1/auth/role-permission/create:
+  post:
+      tags:
+        - Authorizations
+      summary: Create Role Permission
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolePermissionModel'
+      responses:
+        '200':
+          description: A successful response
+/api/v1/auth/role-permission/update/{rpId}:
+  patch:
+      tags:
+        - Authorizations
+      summary: Update Role Permission By id
+      parameters:
+        - in: path
+          name: rpId
+          required: true
+          description: 'Input permissionCode as string'
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolePermissionModel'
+      responses:
+        '200':
+          description: A successful response
+/api/v1/auth/role-permission/delete/{rpId}:
+    delete:
+        tags:
+          - Authorizations
+        summary: Delete Role By permissionCode
+        parameters:
+          - in: path
+            name: rpId
+            required: true
+            description: 'Input rpId as number'
+            schema:
+              type: string
+        security:
+          - bearerAuth: []
+        responses:
+          '200':
+            description: A successful response         
+
 components:
-  schemas:
-    ExampleRequestToken:
-      type: object
+  requestBodies:
+    RequestToken:
       properties:
-        - $ref: "#/components/schemas/RequestTokenPassword"
+        username:
+          type: string
+        password:
+          type: string
+      required:  
+        - username
+        - password
+    RoleSearch:
+      properties:
+        page:
+          $ref: "#/components/schemas/PagingCriteria"
+        criteria:
+          type: object
+          properties:
+            role:
+              type: string
+    PermissionSearch:
+      properties:
+        page:
+          $ref: "#/components/schemas/PagingCriteria"
+        criteria:
+          type: object
+          properties:
+            permission:
+              type: string
+    RolePermissionSearch:
+      properties:
+        page:
+          $ref: "#/components/schemas/PagingCriteria"
+        criteria:
+          type: object
+          properties:
+            role_permission:
+              type: string
     RequestTokenPassword:
       properties:
         username:
@@ -96,26 +364,53 @@ components:
             - google
       required:
         - grant_type
+  responses:
     ResponseToken:
       properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-        refresh_token:
-          type: string
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+        statusCode:
+          type: integer
+        isSuccess:
+          type: boolean
     ErrorResponse:
       properties:
         statusCode:
           type: integer
-        errorMessage:
+        isSuccess:
+          type: boolean
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  schemas:
+    RoleModel:
+      properties:
+        role_code:
           type: string
-        errorCode:
+        role_desc:
           type: string
-  securitySchemes:
-    bearerAuth: # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT # optional, arbitrary value for documentation purposes
-security:
-  - bearerAuth: []
+        is_active:
+          type: boolean
+    PermissionModel:
+      properties:
+        permission_code:
+          type: string
+        permission_desc:
+          type: string
+        is_active:
+          type: boolean
+    RolePermissionModel:
+      properties:
+        role_id:
+          type: integer
+        permission_code:
+          type: string
+        is_active:
+          type: boolean

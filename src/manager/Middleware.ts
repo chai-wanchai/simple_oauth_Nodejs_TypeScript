@@ -78,7 +78,23 @@ export class Middelware {
       const err = new ErrorHandle(error)
       err.sendErrorResponse(res)
     }
-
+  }
+  getUserPayload(req: Request) {
+    try {
+      const { authorization } = req.headers
+      if (authorization) {
+        const token = authorization.replace('Bearer ', '')
+        const payload = JWT.verifyToken(token)
+        return payload
+      } else {
+        const err = new CommonError()
+        err.setErrorByCode('REQUIRE_AUTH')
+        throw err
+      }
+    } catch (error) {
+      const err = new ErrorHandle(error)
+      throw err
+    }
   }
   async checkRole(roleCode: string) {
     try {
