@@ -20,7 +20,7 @@ export class User {
   email?: string;
   @Column({ nullable: true })
   picture_url?: string;
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   password?: string;
   @Column({ default: true })
   is_active?: boolean;
@@ -36,7 +36,7 @@ export class User {
   updated_at?: Date;
   @DeleteDateColumn({ type: 'timestamp with time zone' })
   deleted_date?: Date;
-  @OneToMany(type=>Token,token=>token.user)
+  @OneToMany(type => Token, token => token.user)
   @JoinColumn()
   token?: Token[]
 }

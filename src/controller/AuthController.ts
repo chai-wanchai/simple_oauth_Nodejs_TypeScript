@@ -57,7 +57,7 @@ export async function loginWithUsernamePassword(req: Request, res: Response, nex
   try {
     const { client } = res.locals
     const { username, password } = req.body
-    const user: User = await UserManager.findUserByUsername(username)
+    const user: User = await UserManager.findUserByUsername(username,true)
     if (user) {
       AuthManager.decodePassword(password, user.password)
       const result = await AuthManager.getTokenResult(user, client)

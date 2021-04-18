@@ -10,8 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "listFiles": false,
-    "pretty": true,
-    
+    "pretty": true,    
     "typeRoots": [
       "node_modules/@types"
     ]

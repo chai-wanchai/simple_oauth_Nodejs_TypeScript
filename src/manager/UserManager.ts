@@ -11,19 +11,23 @@ export class UserManager {
     const result = await dbAuth.users.findUserByUid(uid)
     return result
   }
-  async updateUserById(id: number,userInfo:User) {
-    const result = await dbAuth.users.updateUserById(userInfo,id)
+  async updateUserById(id: number, userInfo: User) {
+    const result = await dbAuth.users.updateUserById(userInfo, id)
   }
   async findUserById(id: number) {
     const result = await dbAuth.users.findUserById(id)
     return result
   }
-  async findUserByUsername(email: string) {
-    const result = await dbAuth.users.findUserByEmailOrUsername(email)
+  async findUserByUsername(email: string, requirePassword: boolean = false) {
+    const result = await dbAuth.users.findUserByEmailOrUsername(email, requirePassword)
     return result
   }
   async findUserOrCreate(userData: User) {
     const result = await dbAuth.users.createUser(userData)
+    return result
+  }
+  async getAllUser() {
+    const result = await dbAuth.users.getAllUsers()
     return result
   }
 }

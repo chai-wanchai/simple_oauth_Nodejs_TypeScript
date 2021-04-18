@@ -48,3 +48,13 @@ export async function updateUser(req: Request, res: Response, next: NextFunction
 	}
 	next([result, result.statusCode])
 }
+export async function listUser(req: Request, res: Response, next: NextFunction) {
+	const result = new AjaxResult()
+	try {
+		result.data = await manager.user.getAllUser()
+	} catch (error) {
+		const err = new ErrorHandle(error)
+		result.setHandleError(err)
+	}
+	next([result, result.statusCode])
+}

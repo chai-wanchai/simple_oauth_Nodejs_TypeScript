@@ -10,6 +10,11 @@ class UserDbService {
 		this.userModel = this.connection.getRepository(User)
 		return this.connection;
 	}
+	async getAllUsers() {
+		this.getDb();
+		const result = await this.userModel.find()
+		return result;
+	}
 	async createUser(entity: User): Promise<User> {
 		this.getDb();
 		const result = await this.userModel.save(entity)
@@ -30,9 +35,13 @@ class UserDbService {
 		const result = await this.userModel.findOne({ email: email })
 		return result;
 	}
-	async findUserByEmailOrUsername(emailOrUsername: string) {
+	async findUserByEmailOrUsername(emailOrUsername: string, requirePassword: boolean = false) {
 		this.getDb();
-		const result = await this.userModel.findOne({ where: [{ email: emailOrUsername }, { username: emailOrUsername }] })
+		let select = undefined
+		if (requirePassword) {
+			select=['password']
+		}
+		const result = await this.userModel.findOne({ select: select, where: [{ email: emailOrUsername }, { username: emailOrUsername }] })
 		return result;
 	}
 	async updateUserByEmail(entity: User, email: string): Promise<UpdateResult> {

@@ -13,6 +13,16 @@
     responses:
       "200":
         description: A successful response
+/api/v1/user/list:
+  get:
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    summary: Get user information with access token
+    responses:
+      "200":
+        description: A successful response
 /api/v1/user/profile:
   get:
     tags:

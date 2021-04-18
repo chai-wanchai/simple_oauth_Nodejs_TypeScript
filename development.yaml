@@ -30,6 +30,16 @@ services:
       PGDATA: /data/postgres   
     ports:
       - 5432:5432
+  mysql:
+    image: "mysql:5.7.24"
+    container_name: "typeorm-mysql"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "test"
+      MYSQL_DATABASE: "test"
 volumes:
     postgres_database:
         external: true
